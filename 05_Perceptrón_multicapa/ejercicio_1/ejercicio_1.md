@@ -196,13 +196,3 @@ de forma constante desde la época 50, mientras que la profunda se queda
 prácticamente sin moverse (0.6706 → 0.6622) durante las primeras 400 épocas
 y recién entre las épocas 400 y 500 empieza a bajar con fuerza — el tramo
 donde el gradiente finalmente "atraviesa" las capas saturadas.
-
-## 7. Notas de ejecución
-
-Las corridas se ejecutaron localmente con las mismas versiones de librerías
-que usa Google Colab (NumPy, scikit-learn, TensorFlow/Keras), corriendo
-íntegramente el contenido de las dos notebooks copiadas. El único paso que
-falta para cerrar del todo el criterio de aceptación ("las notebooks
-corrieron en Colab") es abrir esas mismas copias directamente en
-Colab y confirmar que producen los mismos números — de esperarse, ya que el
-código y las versiones de librerías coinciden.
