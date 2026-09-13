@@ -38,7 +38,8 @@ Como podemos observar el camino con menos carreteras no es el más barato en km.
 | DLS (limit=4) | success | Timisoara → Arad → Sibiu → Fagaras → Bucharest | 4 | 568 | 4 | 6 |
 | IDS | success | Timisoara → Arad → Sibiu → Fagaras → Bucharest | 4 | 568 | 14 | 34 |
 
-Evidencia completa de las corridas en [`evidencia/salida_terminal.md`](evidencia/salida_terminal.md).
+La tabla resume el status, path, depth, cost, expanded y generated de cada
+corrida.
 
 ## 3. Reporte
 
