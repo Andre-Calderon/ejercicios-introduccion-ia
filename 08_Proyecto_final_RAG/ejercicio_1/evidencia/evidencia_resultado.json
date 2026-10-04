@@ -1,0 +1,55 @@
+{
+    "en_dominio": {
+        "pregunta": "¿Qué pasa si un inquilino no paga la renta a tiempo?",
+        "abstained": true,
+        "texto": "No tengo información sobre ese tema en las reglas del sistema. Por ahora solo puedo explicar cómo funcionan los procesos y reglas de MisRentas; no consulto datos de tu cuenta.",
+        "best_score": 0.6567316736320079,
+        "citas": [],
+        "modelo": "gpt-6-luna",
+        "latencia_ms": 3060
+    },
+    "ambigua": {
+        "pregunta": "¿Cómo se maneja un contrato?",
+        "abstained": false,
+        "texto": "El sistema genera desde la creación la corrida completa de precios anuales, calculándolos sobre el precio del año inmediato anterior si hay un incremento porcentual o fijo [1]. Si el incremento es por INPC, las rentas posteriores al primer año quedan provisionales hasta calcular el valor real; 15 días naturales antes del aniversario, el sistema las actualiza a definitivas y registra el cálculo [3][4]. Si se asignan servicios con distribución proporcional, calcula el porcentaje correspondiente a cada tenant [2]. Cuando la fecha de fin ya pasó, clasifica el contrato como «finalizado» en consultas y reportes [5].",
+        "best_score": 0.6934242309625636,
+        "citas": [
+            {
+                "rule_code": "CONT-D-005",
+                "module": "Contratos",
+                "score": 0.6934242309625636
+            },
+            {
+                "rule_code": "CONT-D-007",
+                "module": "Contratos",
+                "score": 0.6826522570533969
+            },
+            {
+                "rule_code": "CONT-D-006",
+                "module": "Contratos",
+                "score": 0.67411096864391
+            },
+            {
+                "rule_code": "CONT-D-001",
+                "module": "Contratos",
+                "score": 0.691631780693063
+            },
+            {
+                "rule_code": "CONT-D-003",
+                "module": "Contratos",
+                "score": 0.6705282475562521
+            }
+        ],
+        "modelo": "gpt-6-luna",
+        "latencia_ms": 2829
+    },
+    "fuera_de_dominio": {
+        "pregunta": "¿Cuál es la capital de Francia?",
+        "abstained": true,
+        "texto": "No tengo información sobre ese tema en las reglas del sistema. Por ahora solo puedo explicar cómo funcionan los procesos y reglas de MisRentas; no consulto datos de tu cuenta.",
+        "best_score": 0.5098758241237178,
+        "citas": [],
+        "modelo": null,
+        "latencia_ms": 656
+    }
+}
