@@ -257,8 +257,38 @@ similitud, exclusión de chunks con dimensión distinta, abstención sin llamar 
 duplicados, protección contra inyección a nivel de prompt, límites de tasa por minuto/día
 separados, y las políticas de reintento documento-vs-consulta.
 
+### 6.2 Probarlo en vivo
+
+Spec Swagger aislado solo de los 3 endpoints del chatbot/RAG (sin el resto de la documentación
+interna del API — ver sección 8 para el detalle de cómo se aisló):
+
+**https://devapi.misrentas.mx/api/chatbot/documentation**
+
+Para probar los endpoints desde ahí (o usar el widget directamente en la app), hace falta un
+token de sesión (Bearer). Pasos:
+
+1. Entra a **https://devapp.misrentas.mx/auth/login** e inicia sesión con una cuenta de prueba:
+   - Usuario: `andre@grupoicarus.com.mx`
+   - Contraseña: `maestria_en_ia`
+2. Abre las herramientas de desarrollador del navegador (F12) → pestaña **Network**.
+3. Navega dentro de la app (cualquier clic que dispare una petición a la API sirve) y busca
+   cualquier solicitud hacia `devapi.misrentas.mx`.
+4. En los **Request Headers** de esa solicitud, copia el valor completo del header
+   `Authorization: Bearer <token>`.
+5. Para usarlo en Swagger: botón **Authorize** (arriba a la derecha) → pega `Bearer <token>` →
+   **Authorize**. Ya puedes probar `POST /api/chatbot/messages`, `POST /api/system/rag/reindex`
+   (requiere rol Admin) y `POST /api/rag/query` con **Try it out**.
+6. Para usarlo directo en la app: simplemente sigue navegando ya logueado — el widget de chat
+   (ícono inferior derecho) usa la misma sesión, no requiere pegar el token a mano.
+
+`GET /api/system/rag/health` no requiere token — confirma que la API y la base `rag` están vivas,
+sin gastar en embeddings ni generación: **https://devapi.misrentas.mx/api/system/rag/health**
+
 ## 7. Qué endpoint usar para cada cosa
 
+- `GET /system/rag/health` (sin autenticación, pensado para monitoreo/balanceadores) — confirma que
+  la API vive y que la conexión aislada `rag` responde, reportando cuántos chunks hay indexados. No
+  llama a ningún proveedor de embeddings ni modelo de lenguaje.
 - `POST /rag/query` (permiso `rag.read`) — búsqueda cruda: devuelve los chunks más similares y su
   score, sin pasar por el modelo de generación. Útil para depurar el umbral.
 - `POST /chatbot/messages` (permiso `chatbot.read`, oculto para inquilinos) — flujo completo:
@@ -270,7 +300,9 @@ separados, y las políticas de reintento documento-vs-consulta.
 
 | Criterio | Cómo se cumple |
 |---|---|
-| Documentación vía OpenAPI / endpoints visibles | `l5-swagger` ya integrado en el repo (`L5_SWAGGER_*` en `.env`); `POST /system/rag/reindex`, `POST /rag/query`, `POST /chatbot/messages` documentados con anotaciones Swagger en sus controllers. |
+| Documentación vía OpenAPI / endpoints visibles | `l5-swagger` ya integrado en el repo (`L5_SWAGGER_*` en `.env`); `GET /system/rag/health`, `POST /system/rag/reindex`, `POST /rag/query`, `POST /chatbot/messages` documentados con anotaciones Swagger en sus controllers, en un spec aislado solo de estos 4 endpoints (sin el resto del API interno). Spec en vivo y credenciales de prueba en la sección 6.2. |
 | Sin claves expuestas en el repositorio | `EMBEDDINGS_API_KEY` y `CHAT_API_KEY` solo en `.env` (gitignored); `.env.example` documenta las variables sin valores reales. |
 | El índice persiste tras reiniciar la API | `rag_chunks` vive en MySQL (conexión aislada `rag`, tablas propias), no en memoria del proceso PHP — sobrevive cualquier reinicio de `php artisan serve`. |
+| Endpoint de salud (`GET /health` o equivalente) | `GET /system/rag/health`, sin autenticación (pensado para monitoreo/balanceadores). Verifica que la conexión `rag` responde y reporta `chunks_indexed`, sin llamar a ningún proveedor de embeddings/generación. |
+| La UI muestra citas con origen y score | El panel "Reglas consultadas" del widget (`AssistantCitationsComponent.tsx`, repo frontend) muestra módulo, tipo, prioridad y ahora también el **% de similitud** (`score` que ya devolvía el API, agregado a la UI el 2026-10-04). |
 
